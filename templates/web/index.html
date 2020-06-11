@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="en" style="" class=" js flexbox flexboxlegacy canvas canvastext webgl no-touch geolocation postmessage websqldatabase indexeddb hashchange history draganddrop websockets rgba hsla multiplebgs backgroundsize borderimage borderradius boxshadow textshadow opacity cssanimations csscolumns cssgradients cssreflections csstransforms csstransforms3d csstransitions fontface no-generatedcontent video audio localstorage sessionstorage webworkers no-applicationcache svg inlinesvg smil svgclippaths"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="Magnifica Questionnaire Form Wizard includes Coronavirus Health questionnaire">
+    <meta name="author" content="Ansonika">
+    <title>Survey | Questionnaire </title>
+
+    <!-- Favicons-->
+    <link rel="shortcut icon" href="http://www.ansonika.com/magnifica/img/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" type="image/x-icon" href="http://www.ansonika.com/magnifica/img/apple-touch-icon-57x57-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="72x72" href="http://www.ansonika.com/magnifica/img/apple-touch-icon-72x72-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="114x114" href="http://www.ansonika.com/magnifica/img/apple-touch-icon-114x114-precomposed.png">
+    <link rel="apple-touch-icon" type="image/x-icon" sizes="144x144" href="http://www.ansonika.com/magnifica/img/apple-touch-icon-144x144-precomposed.png">
+
+    <!-- GOOGLE WEB FONT -->
+    <link href="{% static 'web/css' %}" rel="stylesheet">
+
+    <!-- BASE CSS -->
+    <link href="{% static 'web/bootstrap.min.css' %}" rel="stylesheet">
+	<link href={% static 'web/menu.css' %}" rel="stylesheet">
+    <link href="{% static 'web/style.css' %}" rel="stylesheet">
+	<link href="{% static 'web/vendors.css' %}" rel="stylesheet">
+
+    <!-- YOUR CUSTOM CSS -->
+    <link href="{% static 'web/custom.css' %}" rel="stylesheet">
+	
+	<!-- MODERNIZR MENU -->
+	<script src="{% static 'web/modernizr.js.download' %}"></script>
+    <script>
+    function downfun(srcc,id){
+    var form = document.getElementById(id);
+    var base_url = window.location.origin;
+    var dwn = document.getElementById('dwn')
+    dwn.href = base_url + srcc;
+    dwn.click();
+    document.getElementById('dwn').href ="";
+    form.submit();
+    
+}
+</script>
+
+</head>
+
+<body style="overflow: visible;">
+	
+	<div id="preloader" style="display: none;">
+		<div data-loader="circle-side" style="display: none;"></div>
+	</div><!-- /Preload -->
+	
+	<div id="loader_form">
+		<div data-loader="circle-side-2"></div>
+	</div><!-- /loader_form -->
+
+	<header>
+		<div class="container">
+		    <div class="row">
+                <div class="col-3">
+                     <a href="#"><img src="./Magnifica _ Questionnaire Form Wizard by Ansonika_files/logo.svg" alt="" width="178" height="45" class="d-none d-md-block"><img src="./Magnifica _ Questionnaire Form Wizard by Ansonika_files/logo_mobile.svg" alt="" width="62" height="45" class="d-block d-md-none"></a>
+                </div>
+                <div class="col-9">
+                   
+                   
+                </div>
+            </div>
+		</div>
+		<!-- /container -->
+	</header>
+	<!-- /Header -->
+
+	<div class="container">
+    <div id="form_container">
+        <div class="row no-gutters">
+            <div class="col-lg-4">
+                <div id="left_form">
+                    <figure><img src="{% static 'web/info_graphic_1.svg' %}" alt="" width="100" height="100"></figure>
+                    <h2>CORONAVIRUS <span>Health Questionnaire</span></h2>
+                    <p> {% if msg == 'not_completed' %}Welcome back <b style="color:yellow;">{{ request.session.name }}</b>, it seems your email(<b style="color:yellow;"  id="uemail">{{ request.session.email}}</b>) already logined for this Survey, you can complete the survey now.{% else %}
+                    Welcome <b style="color:yellow;">{{ request.session.name }}</b>,logined email id is <b style="color:yellow;" id="uemail">{{ request.session.email }}</b>
+                    {% endif %}</p>
+                    
+                   
+                </div>
+            </div>
+            <div class="col-lg-8">
+                <div id="wizard_container" class="wizard">
+                    <div id="top-wizard">
+                        <div id="progressbar" class="ui-progressbar ui-widget ui-widget-content ui-corner-all" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0"><div class="ui-progressbar-value ui-widget-header ui-corner-left" style="display: none; width: 0%;"></div></div>
+                        <span id="loc"></span>
+                    </div>
+                    <!-- /top-wizard -->
+                    <form id="mform"  method="post" class="fl-form fl-style-1">{% csrf_token %}
+                       
+                        <div id="middle-wizard" class="wizard-branch wizard-wrapper">
+                            {% for i in survey_data %}
+                            <div class="step wizard-step current">
+                                <h3 class="main_question"><i class="arrow_right"></i>{{ i.title }}</h3>
+                                <p style="color:red;">{%if i.is_mandatory is True %}{% if i.is_multiple is True %}*Select Minimum One Option{% else %}*Required{% endif %}{% endif %}</p>
+                                <div class="form-group">
+                                    {% for j in i.choices %}
+                                    <label class="container_radio version_2">{{ j.choice }}
+                                        <input type="{%if i.is_multiple is False %}radio{% else %}checkbox{% endif %}" name="{%if i.is_mandatory is True %}M{% else %}N{% endif %}{% if i.multiple is False %}{{ i.id }}{% else %}{{ i.id }}[]{% endif %}" value="{{ j.id }}">
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    {% endfor %}
+                                   
+                                </div>
+
+                                {% endfor %}
+                                 <div class="form-group add_top_30">
+                                    
+                                    <div class="fl-wrap fl-wrap-input fl-is-required"><input type="Submit" name="subm" class="button"></div>
+                                </div>
+                                
+                                <!-- /row -->
+                            </div>
+                          
+                           
+                             
+                          
+
+
+                            
+
+                            
+                       
+                    </form>
+                    
+                   
+                                </div>
+                            
+                     
+                </div>
+               
+                
+                <!-- /Wizard container -->
+            </div>
+        </div><!-- /Row -->
+    </div><!-- /Form_container -->
+</div>
+<!-- /container -->
+
+<div class="container">
+    <footer id="home" class="clearfix">
+        <p>© 2020 Covid19</p>
+        <ul>
+            
+            <li><a href="" class="animated_link">Faq</a></li>
+            <li><a href="" class="animated_link">Prevention Tips</a></li>
+        </ul>
+    </footer>
+    <!-- end footer-->
+</div>
+<!-- /container -->
+
+<div class="cd-overlay-nav">
+    <span class="" style="transform: scaleX(0) scaleY(0); height: 3350.1px; width: 3350.1px; top: -1675.05px; left: -1675.05px;"></span>
+</div>
+<!-- /cd-overlay-nav -->
+<div class="cd-overlay-content">
+    <span class="" style="transform: scaleX(0) scaleY(0); height: 3350.1px; width: 3350.1px; top: -1675.05px; left: -1675.05px;"></span>
+</div>
+<!-- /cd-overlay-content -->
+
+	<!-- Modal terms -->
+	<div class="modal fade" id="terms-txt" tabindex="-1" role="dialog" aria-labelledby="termsLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="termsLabel">Terms and conditions</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">
+					<p>Lorem ipsum dolor sit amet, in porro albucius qui, in <strong>nec quod novum accumsan</strong>, mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus.</p>
+					<p>Lorem ipsum dolor sit amet, in porro albucius qui, in nec quod novum accumsan, mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus. Lorem ipsum dolor sit amet, <strong>in porro albucius qui</strong>, in nec quod novum accumsan, mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus.</p>
+					<p>Lorem ipsum dolor sit amet, in porro albucius qui, in nec quod novum accumsan, mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn_1" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+
+	<!-- Modal info -->
+	<div class="modal fade" id="more-info" tabindex="-1" role="dialog" aria-labelledby="more-infoLabel" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title" id="more-infoLabel">Frequently asked questions</h4>
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+				</div>
+				<div class="modal-body">
+					<p>Lorem ipsum dolor sit amet, in porro albucius qui, in <strong>nec quod novum accumsan</strong>, mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus.</p>
+					<p>Lorem ipsum dolor sit amet, in porro albucius qui, in nec quod novum accumsan, mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus. Lorem ipsum dolor sit amet, <strong>in porro albucius qui</strong>, in nec quod novum accumsan, mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus.</p>
+					<p>Lorem ipsum dolor sit amet, in porro albucius qui, in nec quod novum accumsan, mei ludus tamquam dolores id. No sit debitis meliore postulant, per ex prompta alterum sanctus, pro ne quod dicunt sensibus.</p>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn_1" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
+	<input type='number' id="hidvalue" value={{ sucf }} hidden>
+    <a href="" id="dwn" download hidden> file_name </a>
+    <input type="text" value="{{ alert }}" name="alrt" id="alrt" hidden readonly>
+	<!-- COMMON SCRIPTS -->
+	<script src="{% static 'web/jquery-3.2.1.min.js.download' %}"></script>
+    {% comment %} <script src="{% static 'web/common_scripts.min.js.download' %}"></script>
+	<script src="{% static 'web/velocity.min.js.download' %}"></script>
+	<script src="{% static 'web/common_functions.js.download' %}"></script> {% endcomment %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+	<!-- Wizard script-->
+	{% comment %} <script src="{% static 'web/func_1.js.download' %}"></script> {% endcomment %}
+<script>
+$( document ).ready(function() {
+    var alrt = document.getElementById('alrt').value;
+    if(alrt == 'suc'){
+        alert('PLease Fill All Mandatory Fields!')
+    }
+});
+function foo(sel){
+    $.cookie(sel.name,sel.value);
+    var uemail = document.getElementById('uemail').innerText;
+     $.cookie('uemail',uemail);
+}
+
+    
+$('#sbtn').click(function(){
+    
+        if ($('#location').val() == ''){
+            alert('Please Enter your Location');
+            $('#location').focus();
+        }
+        else if ($('#job').val() == ''){
+            alert('Please Enter your Job');
+            $('#job').focus();
+        }
+
+         else if ($('#industry').val() == ''){
+            alert('Please Enter your Job Industry');
+            $('#industry').focus();
+        }
+    else if (!$("input[name='question_3']:checked").val()) {
+        alert('please selectan option for -Does corona affect your financial stability?');
+  
+        }
+        else if ($('#description').val() == ''){
+            alert('Please Enter:How did you manage to effectively use your time during lockdown?');
+            $('#description').focus();
+        }
+       else if ($('#hidvalue').val() > 0){
+                alert('Please Download All files before submitting.')
+            }
+            else{
+                 $('#mform').submit();
+                
+    }
+    
+
+
+           
+
+    
+
+
+    
+    
+})
+
+</script>
+
+</body></html>
